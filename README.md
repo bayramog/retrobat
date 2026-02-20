@@ -33,13 +33,39 @@ RetroBat can also run in Portable Mode. This means you can play games from an ex
 
 This fork keeps existing Windows support and adds a structured program to deliver macOS support for **Apple Silicon only**.
 
+### 📚 Documentation
+
+**Project Structure:**
 - Role decisions: [docs/macos/ROLE_DECISIONS.md](docs/macos/ROLE_DECISIONS.md)
 - Roadmap: [docs/macos/ROADMAP.md](docs/macos/ROADMAP.md)
 - Branching policy: [docs/macos/BRANCHING_POLICY.md](docs/macos/BRANCHING_POLICY.md)
 - Test and validation: [docs/macos/TEST_AND_VALIDATION.md](docs/macos/TEST_AND_VALIDATION.md)
 - Local workflow: [docs/macos/LOCAL_WORKFLOW.md](docs/macos/LOCAL_WORKFLOW.md)
 
-No upstream PR is allowed until fork-level completion and validation goals are reached.
+**Security & Development:**
+- Security setup: [docs/macos/SECURITY_SETUP.md](docs/macos/SECURITY_SETUP.md)
+- Copilot workflow: [docs/macos/COPILOT_WORKFLOW.md](docs/macos/COPILOT_WORKFLOW.md)
+- Copilot cheatsheet: [docs/macos/COPILOT_CHEATSHEET.md](docs/macos/COPILOT_CHEATSHEET.md)
+- Contributing: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Code of Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- Security Policy: [.github/SECURITY.md](.github/SECURITY.md)
+
+### 🚀 Quick Start
+
+```bash
+# Install git hooks
+bash tools/dev/install-git-hooks.sh
+
+# Start with Copilot agents
+@explore "Bu projede neler var?"
+```
+
+### ⚠️ Important Notes
+
+- No upstream PR is allowed until fork-level completion and validation goals are reached
+- This project is developed entirely with GitHub Copilot Agents
+- Apple Silicon only - no Intel support
+- Security-first development approach
 
 
 ## 🦇 RetroBat Team
