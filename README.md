@@ -29,6 +29,18 @@ RetroBat can also run in Portable Mode. This means you can play games from an ex
 |   |[DirectX](https://www.microsoft.com/download/details.aspx?id=35)|
 |**Controllers:**|Xinput controllers hightly recommanded. Test your controller [HERE](https://gamepad-tester.com)|
 
+## 🍎 Fork Platform Program (bayramog/retrobat)
+
+This fork keeps existing Windows support and adds a structured program to deliver macOS support for **Apple Silicon only**.
+
+- Role decisions: [docs/macos/ROLE_DECISIONS.md](docs/macos/ROLE_DECISIONS.md)
+- Roadmap: [docs/macos/ROADMAP.md](docs/macos/ROADMAP.md)
+- Branching policy: [docs/macos/BRANCHING_POLICY.md](docs/macos/BRANCHING_POLICY.md)
+- Test and validation: [docs/macos/TEST_AND_VALIDATION.md](docs/macos/TEST_AND_VALIDATION.md)
+- Local workflow: [docs/macos/LOCAL_WORKFLOW.md](docs/macos/LOCAL_WORKFLOW.md)
+
+No upstream PR is allowed until fork-level completion and validation goals are reached.
+
 
 ## 🦇 RetroBat Team
 

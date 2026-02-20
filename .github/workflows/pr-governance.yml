@@ -1,0 +1,54 @@
+name: PR Governance
+
+on:
+  pull_request:
+    branches:
+      - main
+      - macos/integration
+      - release/macos-alpha
+      - release/macos-beta
+      - release/macos-rc
+
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate repository owner
+        run: |
+          if [[ "${{ github.repository_owner }}" != "bayramog" ]]; then
+            echo "Policy violation: base repository owner must be bayramog"
+            exit 1
+          fi
+
+      - name: Validate target branch
+        run: |
+          allowed='^(main|macos/integration|release/macos-(alpha|beta|rc))$'
+          if [[ ! "${{ github.base_ref }}" =~ $allowed ]]; then
+            echo "Policy violation: invalid base branch '${{ github.base_ref }}'"
+            exit 1
+          fi
+
+      - name: Validate source branch naming
+        run: |
+          allowed='^(main|macos/integration|release/macos-(alpha|beta|rc)|(epic|feature|fix|chore)/(macos|windows|cross)-[a-z0-9._-]+)$'
+          if [[ ! "${{ github.head_ref }}" =~ $allowed ]]; then
+            echo "Policy violation: invalid source branch '${{ github.head_ref }}'"
+            exit 1
+          fi
+
+      - name: Validate PR checklist markers
+        env:
+          BODY: ${{ github.event.pull_request.body }}
+        run: |
+          required=(
+            "Base repository is `bayramog/retrobat`"
+            "No upstream push/PR action is involved"
+            "Static/script checks passed"
+          )
+
+          for marker in "${required[@]}"; do
+            if ! grep -Fq "$marker" <<< "$BODY"; then
+              echo "Policy violation: missing checklist marker '$marker'"
+              exit 1
+            fi
+          done

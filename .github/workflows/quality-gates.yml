@@ -1,0 +1,55 @@
+name: Quality Gates
+
+on:
+  pull_request:
+    branches:
+      - main
+      - macos/integration
+      - release/macos-alpha
+      - release/macos-beta
+      - release/macos-rc
+  push:
+    branches:
+      - macos/integration
+      - release/macos-alpha
+      - release/macos-beta
+      - release/macos-rc
+
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate required governance docs
+        run: |
+          required_files=(
+            "docs/macos/ROLE_DECISIONS.md"
+            "docs/macos/ROADMAP.md"
+            "docs/macos/BRANCHING_POLICY.md"
+            "docs/macos/TEST_AND_VALIDATION.md"
+            "docs/macos/LOCAL_WORKFLOW.md"
+          )
+
+          for f in "${required_files[@]}"; do
+            [[ -f "$f" ]] || { echo "Missing required file: $f"; exit 1; }
+          done
+
+      - name: Bash syntax check
+        run: |
+          mapfile -d '' files < <(find . \( -name "*.sh" -o -name "*.command" \) -print0)
+          if [[ ${#files[@]} -eq 0 ]]; then
+            echo "No shell scripts found"
+            exit 0
+          fi
+
+          for file in "${files[@]}"; do
+            bash -n "$file"
+          done
+
+      - name: Enforce Apple Silicon-only policy docs
+        run: |
+          if ! grep -Fq "Apple Silicon only" docs/macos/ROADMAP.md; then
+            echo "Policy violation: Roadmap must explicitly state Apple Silicon only"
+            exit 1
+          fi

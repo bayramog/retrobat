@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+remote_name="${1:-}"
+remote_url="${2:-}"
+current_branch="$(git rev-parse --abbrev-ref HEAD)"
+
+if [[ "$remote_name" == "upstream" ]] || [[ "$remote_url" == *"RetroBat-Official/retrobat"* ]]; then
+  echo "[blocked] Pushing to upstream is not allowed in this fork workflow."
+  exit 1
+fi
+
+allowed_pattern='^(main|macos/integration|release/macos-(alpha|beta|rc)|(epic|feature|fix|chore)/(macos|windows|cross)-[a-z0-9._-]+)$'
+
+if [[ ! "$current_branch" =~ $allowed_pattern ]]; then
+  echo "[blocked] Branch name '$current_branch' does not match policy."
+  echo "Use one of:"
+  echo "  - feature/macos-<scope>"
+  echo "  - fix/macos-<scope>"
+  echo "  - chore/macos-<scope>"
+  echo "  - epic/macos-<scope>"
+  echo "  - feature/windows-<scope> (compatibility only)"
+  echo "  - feature/cross-<scope>"
+  echo "  - release/macos-alpha|beta|rc"
+  echo "  - macos/integration"
+  echo "  - main"
+  exit 1
+fi
+
+exit 0
