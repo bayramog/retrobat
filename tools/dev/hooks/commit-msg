@@ -1,0 +1,30 @@
+#!/bin/bash
+# Git hook: commit-msg
+# Validates commit message format
+
+COMMIT_MSG_FILE=$1
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# Conventional commit pattern
+PATTERN="^(feat|fix|docs|chore|test|refactor|style|perf)(\(.+\))?: .{1,100}"
+
+if [[ ! "$COMMIT_MSG" =~ $PATTERN ]]; then
+    echo "❌ Invalid commit message format"
+    echo ""
+    echo "Format: <type>(<scope>): <description>"
+    echo ""
+    echo "Types:"
+    echo "  feat:     New feature"
+    echo "  fix:      Bug fix"
+    echo "  docs:     Documentation"
+    echo "  chore:    Maintenance"
+    echo "  test:     Tests"
+    echo "  refactor: Code refactoring"
+    echo "  style:    Code style"
+    echo "  perf:     Performance"
+    echo ""
+    echo "Example: feat(macos): add emulator launcher"
+    exit 1
+fi
+
+echo "✅ Commit message is valid"

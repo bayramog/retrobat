@@ -1,0 +1,56 @@
+name: Branch Protection
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  enforce-branch-policy:
+    name: Enforce Branch Policy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate branch naming
+        run: |
+          BRANCH_NAME="${GITHUB_HEAD_REF}"
+          
+          # Allow: feat/, fix/, docs/, chore/, test/, refactor/
+          if [[ ! "$BRANCH_NAME" =~ ^(feat|fix|docs|chore|test|refactor)/.+ ]]; then
+            echo "❌ Invalid branch name: $BRANCH_NAME"
+            echo "Branch must start with: feat/, fix/, docs/, chore/, test/, or refactor/"
+            exit 1
+          fi
+          
+          echo "✅ Branch name is valid: $BRANCH_NAME"
+
+      - name: Check for merge commits
+        run: |
+          if git log --oneline --merges origin/main..HEAD | grep -q '^'; then
+            echo "❌ Merge commits detected. Please rebase instead."
+            exit 1
+          fi
+          echo "✅ No merge commits found"
+
+      - name: Validate commit messages
+        run: |
+          COMMITS=$(git log --format=%s origin/main..HEAD)
+          FAILED=false
+          
+          while IFS= read -r msg; do
+            # Check conventional commit format
+            if [[ ! "$msg" =~ ^(feat|fix|docs|chore|test|refactor|style|perf)(\(.+\))?: ]]; then
+              echo "❌ Invalid commit message: $msg"
+              echo "Must follow: <type>(<scope>): <description>"
+              FAILED=true
+            fi
+          done <<< "$COMMITS"
+          
+          if [ "$FAILED" = true ]; then
+            exit 1
+          fi
+          
+          echo "✅ All commit messages are valid"

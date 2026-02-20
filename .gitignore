@@ -14,3 +14,40 @@ retrobat-*.zip
 retrobat-*.zip.sha256.txt
 InstallerHost.exe.config
 RetroBuild.exe.config
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# IDE
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment & Secrets
+.env
+.env.local
+secrets.yml
+*.key
+*.pem
+
+# Testing
+coverage/
+.pytest_cache/
+.coverage
+test-results/
+
+# Temporary
+tmp/
+temp/
+*.tmp
