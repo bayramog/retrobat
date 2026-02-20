@@ -1,0 +1,11 @@
+# RetroBat Launcher - Runtime Dependencies
+# Python 3.11+
+
+# Configuration file parsing
+PyYAML>=6.0.1
+
+# XML parsing (for es_systems.cfg)
+lxml>=4.9.3
+
+# Process management
+psutil>=5.9.6
