@@ -321,3 +321,52 @@ retrobat-macos/
 **Author:** Research Phase Analysis  
 **Date:** 2026-02-20  
 **Status:** Complete
+
+---
+
+## UPDATE: Upstream Repository Analysis (2026-02-20)
+
+### Forked Repositories
+After initial analysis, we've now forked and analyzed the upstream source code:
+
+**EmulationStation:** https://github.com/bayramog/emulationstation
+- Fork of RetroBat-Official/emulationstation
+- Frontend UI (C++)
+- Can use existing macOS builds (Homebrew)
+
+**EmulatorLauncher:** https://github.com/bayramog/emulatorlauncher  
+- Fork of RetroBat-Official/emulatorlauncher
+- **C# (.NET) - 50,000+ lines of code**
+- 207 generator files (one per emulator)
+- Generator pattern architecture
+
+### Key Discovery: Generator Architecture
+
+The EmulatorLauncher uses a **Generator Pattern**:
+```csharp
+// From Program.cs (1,163 lines)
+static Dictionary<string, Func<Generator>> generators = {
+    { "retroarch", () => new LibRetroGenerator() },
+    { "ppsspp", () => new PpssppGenerator() },
+    { "dolphin", () => new DolphinGenerator() },
+    // ... 125+ emulators
+}
+```
+
+**This confirms our Python architecture is the right approach!**
+
+### Updated Effort Estimate
+
+| Component | Lines | Effort |
+|-----------|-------|--------|
+| Core Launcher | ~400 Python | 1 week |
+| LibRetro Generator | ~300 Python | 1 week |
+| PPSSPP + Dolphin | ~450 Python | 1 week |
+| **Total MVP** | **~1,150 Python** | **3 weeks** |
+
+### Recommendation Update
+✅ **Python generator pattern confirmed as best approach**  
+✅ **Port incrementally: RetroArch → PPSSPP → Dolphin**  
+✅ **~3-4 weeks for MVP** (revised from 6 weeks)
+
+See detailed analysis: [UPSTREAM_ANALYSIS.md](UPSTREAM_ANALYSIS.md)
